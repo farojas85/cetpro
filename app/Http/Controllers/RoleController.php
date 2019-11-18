@@ -14,7 +14,7 @@ class RoleController extends Controller
 
 
     public function listaRoles() {
-        return Role::latest()->paginate(5);
+        return Role::paginate(5);
     }
 
     public function create()

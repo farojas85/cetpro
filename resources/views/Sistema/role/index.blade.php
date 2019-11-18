@@ -39,15 +39,15 @@
                         <td>@{{rol.name}}</td>
                         <td>@{{rol.guard_name}}</td>
                         <td>
-                            <button type="button" class="btn btn-success btn-xs"
+                            <button type="button" class="btn btn-success btn-sm"
                                 title="Mostrar Roles" @click="mostrarRol(rol.id)">
                                 <i class="fas fa-eye"></i>
                             </button>
-                            <button type="button" class="btn btn-warning btn-xs"
+                            <button type="button" class="btn btn-warning btn-sm"
                                 title="Editar Roles" @click="editarRol(rol.id)" >
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button type="button" class="btn btn-danger btn-xs"
+                            <button type="button" class="btn btn-danger btn-sm"
                                 title="Eliminar Roles" @click="eliminarRol(rol.id)">
                                 <i class="fas fa-trash"></i>
                             </button>

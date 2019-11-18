@@ -46,6 +46,7 @@ Route::group(['prefix' => 'permission', 'middleware' => 'auth'], function(){
     Route::get('mostrar', 'PermissionController@show')->name('permission.show');
     Route::put('actualizar','PermissionController@update')->name('permission.update');
     Route::get('filtro','PermissionController@filtro')->name('permission.filtro');
+    Route::post('eliminar','PermissionController@destroy')->name('permission.destroy');
 });
 
 Route::group(['prefix' => 'permission-role', 'middleware' => 'auth'], function(){

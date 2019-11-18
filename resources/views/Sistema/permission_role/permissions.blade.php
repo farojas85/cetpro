@@ -7,15 +7,14 @@
     <div id="cardCollpase4" class="collapse show">
         <div class="card-body">
             <div class="tab-content pt-0" id="tab-contenido">
-                <div v-for="permiso in permissions" :key="permiso.id">
+                <div v-for="permiso in permissions.data" :key="permiso.id">
                     <label>
-                        <input type="checkbox" v-model="permission_role.permission_id" :value="permiso.id">
+                        <input type="checkbox" v-model="permission_role.permission_name" :value="permiso.name">
                         @{{ permiso.name }}
-                        <small >(@{{ permiso.description }})</small>
                     </label>
                 </div>
                 <div class="row container-fluid text-center">
-                    <button type="button" class="btn btn-success" @click="guardar"> 
+                    <button type="button" class="btn btn-success" @click="guardarRolePermission">
                         <i class="fas fa-save"></i> Guardar
                     </button>
                 </div>

@@ -20,6 +20,7 @@
 <script src="adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="adminlte/dist/js/adminlte.js"></script>
+<script src="js/psicotec.js"></script>
 
 <script src="js/vue.js"></script>
 <script src="js/axios.js"></script>

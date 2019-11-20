@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\ThemeUser;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
@@ -41,6 +42,8 @@ class UserController extends Controller
         $user->save();
 
         $user->assignRole($request->role_id);
+
+        ThemeUser::create(['user_id' => $user->id]);
 
         return response()->json(['mensaje' => 'Usuario registrado Satisfactoriamente']);
     }

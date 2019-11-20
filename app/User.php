@@ -3,6 +3,7 @@
 namespace App;
 
 use Spatie\Permission\Traits\HasRoles;
+use App\Navbar;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -24,4 +25,24 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function ThemeUser()
+    {
+        return $this->hasOne(ThemeUser::class);
+    }
+
+    public static function navbarByUser($user_id)
+    {
+        return ThemeUser::with('navbar')->where('user_id',$user_id)->first();
+    }
+
+    public static function sidebarByUser($user_id)
+    {
+        return ThemeUser::with('sidebar')->where('user_id',$user_id)->first();
+    }
+
+    public static function brandlogoByUser($user_id)
+    {
+        return ThemeUser::with('brandlogo')->where('user_id',$user_id)->first();
+    }
 }

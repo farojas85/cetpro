@@ -12,8 +12,9 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            GradosTableSeeder::class,
-            SeccionsTableSeeder::class
+            NavbarsTableSeeder::class,
+            SidebarsTableSeeder::class,
+            BrandlogosTableSeeder::class
         ]);
     }
 }

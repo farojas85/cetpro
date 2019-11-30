@@ -45,4 +45,15 @@ class ThemeUserController extends Controller
 
         return $themeuser;
     }
+
+    public function resetear(Request $request)
+    {
+        $themeuser = ThemeUser::where('user_id',$request->user_id)->first();
+        $themeuser->navbar_id = 16;
+        $themeuser->sidebar_id =1;
+        $themeuser->brandlogo_id = 11;
+        $themeuser->save();
+
+        return $themeuser;
+    }
 }

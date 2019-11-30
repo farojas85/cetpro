@@ -55,6 +55,17 @@ Route::group(['prefix' => 'permission-role', 'middleware' => 'auth'], function()
     Route::post('guardar','PermissionRoleController@store')->name('permission-role.store');
 });
 
+Route::group(['prefix' => 'menu', 'middleware' => 'auth'], function(){
+    Route::get('/', 'MenuController@index')->name('menu.index');
+    Route::get('lista','MenuController@lista')->name('menu.lista');
+    Route::get('padres','MenuController@padres')->name('menu.padres');
+    Route::post('guardar','MenuController@store')->name('menu.store');
+    Route::get('mostrar', 'MenuController@show')->name('menu.show');
+    Route::put('actualizar','MenuController@update')->name('menu.update');
+    Route::get('filtro','MenuController@filtro')->name('menu.filtro');
+    Route::post('eliminar','MenuController@destroy')->name('menu.destroy');
+});
+
 Route::group(['prefix' => 'tabla', 'middleware' => 'auth'], function(){
     Route::get('/', 'ConfiguracionesController@index')->name('tabla.index');
 });
@@ -63,4 +74,5 @@ Route::group(['prefix' => 'themeuser', 'middleware' => 'auth'], function(){
     Route::post('/actualizar-navbar','ThemeUserController@actualizarNavbar');
     Route::post('/actualizar-sidebar','ThemeUserController@actualizarSidebar');
     Route::post('/actualizar-brandlogo','ThemeUserController@actualizarBrandlogo');
+    Route::post('/resetear','ThemeUserController@resetear');
 });

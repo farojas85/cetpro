@@ -1,7 +1,9 @@
 <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
     <div class="p-3 control-sidebar-content">
-        <h5>Personalizar Temas</h5><hr class="mb-2"/>
+        <h5>Personalizar Temas</h5>
+        <button type="button" class="btn btn-info" onclick="resetear({{Auth::user()->id}})">Resetear</button>
+        <hr class="mb-2"/>
         <h6>Navbar: Colores</h6>
         <div class="d-flex"></div>
         <div class="d-flex flex-wrap mb-3">

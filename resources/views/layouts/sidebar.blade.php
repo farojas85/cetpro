@@ -22,24 +22,27 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
-                <!-- Add icons to the links using the .nav-icon class
-       with font-awesome or any other icon font library -->
-                @can('inicio.index')
+                <li class="nav-header">MEN&Uacute; NAVEGACI&Oacute;N</li>
+                @forelse ($menus as $key => $item)
+                    @if ($item["padre_id"]!=0)
+                        @break
+                    @endif
+                    @include('layouts.menu-items',["item" => $item])
+                @empty
+                @endforelse
+                <!--
                 <li class="nav-item">
                     <a href="home" class="nav-link {{ Request::is('home') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-home"></i>
                         <p>Inicio</p>
                     </a>
                 </li>
-                @endcan
-                @can('sistema.index')
                 <li class="nav-item">
                     <a href="sistema" class="nav-link {{ Request::is('sistema') ? 'active' : '' }}">
                         <i class="nav-icon fab fa-windows"></i>
                         <p>Sistema</p>
                     </a>
-                </li>
-                @endcan
+                </li>-->
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

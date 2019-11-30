@@ -117,3 +117,32 @@ function actualizar_brandlogo(user_id,brandlogo_id)
         }
     });
 }
+
+function resetear(user_id)
+{
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+    $.ajax({
+        url : '/themeuser/resetear',
+        method: 'POST',
+        data :{
+            user_id : user_id,
+            '_method' : 'POST',
+            '_token' : CSRF_TOKEN
+        },
+        success: function (response) {
+            window.location.href = window.location.pathname
+        },
+        error : function (xhr) {
+            var res = xhr.responseJSON;
+            if ($.isEmptyObject(res) === false) {
+                $.each(res.errors, function (key, value) {
+                    $('#' + key)
+                        .closest('.form-group')
+                        .addClass('has-error')
+                        .append('<span class="help-block"><strong>' + value + '</strong></span>');
+                });
+            }
+        }
+    });
+}

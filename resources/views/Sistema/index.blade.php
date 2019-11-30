@@ -43,6 +43,11 @@
                                     href="#custom-tabs-three-settings" role="tab"
                                     aria-controls="custom-tabs-three-settings" aria-selected="false">Permisos/Roles</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="menus-view-tab" data-toggle="pill"
+                                    href="#menus-view" role="tab"
+                                    aria-controls="menus-view" aria-selected="false">Men&uacute;s</a>
+                            </li>
                         </ul>
                     </div>
                     <div class="card-body">
@@ -62,6 +67,10 @@
                             <div class="tab-pane fade" id="custom-tabs-three-settings" role="tabpanel"
                                 aria-labelledby="custom-tabs-three-settings-tab">
                                 @include('Sistema.permission_role.index')
+                            </div>
+                            <div class="tab-pane fade" id="menus-view" role="tabpanel"
+                                aria-labelledby="custom-tabs-three-settings-tab">
+                                @include('Sistema.menu.index')
                             </div>
                         </div>
                     </div>

@@ -36,6 +36,19 @@ var app= new Vue({
             role_name:'',
             permission_name:[]
         },
+        menus:[],
+        menu:{
+            id:'',
+            descripcion:'',
+            enlace:'',
+            imagen:'',
+            padre_id:'',
+            orden:'',
+            estado:'',
+            padre:{}
+        },
+        total_menus:0,
+        padres:[],
         offset: 4,
         errores:[]
     },
@@ -98,6 +111,28 @@ var app= new Vue({
             var to = from + (this.offset * 2);
             if (to >= this.permissions.last_page) {
                 to = this.permissions.last_page;
+            }
+            var pagesArray = [];
+            while (from <= to) {
+                pagesArray.push(from);
+                from++;
+            }
+            return pagesArray;
+        },
+        isActivedMenu() {
+            return this.menus.current_page;
+        },
+        pagesNumberMenu() {
+            if (!this.menus.to) {
+                return [];
+            }
+            var from = this.menus.current_page - this.offset;
+            if (from < 1) {
+                from = 1;
+            }
+            var to = from + (this.offset * 2);
+            if (to >= this.menus.last_page) {
+                to = this.menus.last_page;
             }
             var pagesArray = [];
             while (from <= to) {
@@ -360,9 +395,9 @@ var app= new Vue({
             this.getResultsPermission(page)
         },
         nuevoPermiso() {
-            this.role.id='',
-            this.role.name='',
-            this.role.guard_name=''
+            this.permission.id='',
+            this.permission.name='',
+            this.permission.guard_name=''
             this.errores=[]
             $('#permission-create').modal('show')
         },
@@ -477,6 +512,43 @@ var app= new Vue({
                         console.clear()
                     }
                 })
+        },
+        listarMenus() {
+            axios.get('/menu/lista').then(({ data }) => (
+               this.menus = data,
+               this.total_menus = this.menus.total
+            ))
+        },
+        listarMenuPadres() {
+            axios.get('/menu/padres').then(({ data }) => (
+                this.padres = data
+            ))
+        },
+        getResultsMenus(page=1) {
+            axios.get('/menu/lista?page=' + page)
+            .then(response => {
+                this.menus = response.data
+                this.total_menus = this.menus.total
+            });
+        },
+        changePageMenus(page) {
+            this.menus.current_page = page;
+            this.getResultsMenus(page)
+        },
+        nuevoMenu() {
+            this.menu.id=''
+            this.menu.descripcion=''
+            this.menu.enlace=''
+            this.menu.imagen=''
+            this.menu.padre_id=''
+            this.menu.orden=''
+            this.menu.estado=1
+            this.errores=[]
+            this.listarMenuPadres()
+            $('#menu-create').modal('show')
+        },
+        guardarMenu() {
+
         }
     },
     created() {
@@ -487,5 +559,7 @@ var app= new Vue({
         this.listarPermission()
         this.getResultsPermission()
         this.filtroRoles()
+        this.listarMenus()
+        this.getResultsMenus()
     },
 })

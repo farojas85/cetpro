@@ -3,7 +3,6 @@
 namespace App;
 
 use Spatie\Permission\Traits\HasRoles;
-use App\Navbar;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\SoftDeletes;

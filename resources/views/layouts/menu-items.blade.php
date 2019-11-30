@@ -1,23 +1,38 @@
 @if ($item['submenu'] == [])
-    <li>
-        <a href="javascript: void(0);">
-            <i class="{{$item['icono']}}"></i>
-            <span> {{$item['nombre']}} </span>
+    <li class="nav-item">
+        <a href="{{$item['enlace']}}" class="nav-link {{ Request::path() == $item['enlace'] ? 'active' : '' }} ">
+            <i class="nav-icon {{$item['imagen']}}"></i>
+            <p>{{$item['descripcion']}} </p>
         </a>
     </li>
 @else
-    <li>
-        <a href="javascript: void(0);">
-            <i class="{{$item['icono']}}"></i>
-            <span> {{$item['nombre']}} </span>
+    @php
+        $open="";
+        $active="";
+    @endphp
+    @foreach ($item['submenu'] as $sub)
+        @if(Request::path() == $sub['enlace'])
+            @php
+                $open = 'menu-open';
+                $active = 'active';
+            @endphp
+        @endif
+    @endforeach
+    <li class="nav-item has-treeview {{$open}}">
+        <a href="" class="nav-link {{$active}}">
+            <i class="{{$item['imagen']}}"></i>
+            <p>{{$item['descripcion']}} </p>
             <span class="menu-arrow"></span>
         </a>
-        <ul  class="nav-second-level" aria-expanded="false">
+        <ul  class="nav nav-treeview">
             @foreach ($item["submenu"] as $submenu)
-            <li>
-                <a href="{{$submenu['ruta']}}">{{$submenu['nombre']}}</a>
+            <li class="nav-item">
+                <a href="{{$submenu['enlace']}}" class="nav-link {{$active}}">
+                    <i class="nav-icon {{$submenu['imagen']}}"></i>
+                    <p>{{$submenu['descripcion']}}</p>
+                </a>
             </li>
             @endforeach
         </ul>
-    </li> 
+    </li>
 @endif

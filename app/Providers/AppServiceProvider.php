@@ -49,5 +49,10 @@ class AppServiceProvider extends ServiceProvider
                 'brandlogo_color' => Brandlogo::bgColor()
              ]);
         });
+
+        View()->composer("layouts.sidebar",function($view){
+            $menus= Menu::getMenu(true);
+            $view->with('menus',$menus);
+        });
     }
 }

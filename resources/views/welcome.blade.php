@@ -76,7 +76,7 @@
             <div class="content">
                 <div class="title m-b-md">
                     <h3>CENTRO DE EDUCACIÓN TÉCNICO PRODUCTIVO</h3>
-                    <img src="images/logofinal.png">
+                    <img src="images/cetproasb.jpg" width="300"
                 </div>
             </div>
         </div>

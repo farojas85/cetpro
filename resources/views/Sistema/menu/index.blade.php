@@ -4,6 +4,17 @@
         <button type="button" class="btn btn-danger btn-sm btn-rounded" @click="nuevoMenu">
             <i class="fas fa-plus"></i> Nuevo Men&uacute;
         </button>
+        <div class="btn-group">
+            <button type="button" class="btn btn-info btn-rounded btn-sm">Filtros</button>
+            <button type="button" class="btn btn-info btn-rounded btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                <span class="sr-only">Toggle Dropdown</span>
+                <div class="dropdown-menu" role="menu">
+                    <a class="dropdown-item" href="#" @click="mostrarTodos">Todos</a>
+                    <a class="dropdown-item" href="#" @click="mostrarHabilitados">Habilitados</a>
+                    <a class="dropdown-item" href="#" @click="mostrarEliminados">Eliminados</a>
+                </div>
+            </button>
+        </div>
         {{-- @endcan --}}
     </div>
     <div class="col-md-6 text-right">
@@ -51,23 +62,54 @@
                             <span v-else class="badge badge-danger">Inactivo</span>
                         </td>
                         <td>
+                            <span v-if="menu.deleted_at==null">
                             <button type="button" class="btn btn-info btn-xs"
-                                title="Mostrar Permiso" @click="">
+                                title="Mostrar Menú" @click="mostrarMenu(menu.id)">
                                 <i class="fas fa-eye"></i>
                             </button>
                             <button type="button" class="btn btn-warning btn-xs"
-                                title="Editar Permiso" @click="" >
+                                title="Editar Menú" @click="editarMenu(menu.id)" >
                                 <i class="fas fa-edit"></i>
                             </button>
                             <button type="button" class="btn btn-danger btn-xs"
-                                title="Eliminar Permiso" @click="">
+                                title="Eliminar Menú" @click="eliminarMenu(menu.id)">
                                 <i class="fas fa-trash"></i>
                             </button>
+                            </span>
+                            <span v-else>
+                                <button type="button" class="btn btn-danger btn-xs"
+                                    title="Restaurar Menú" @click="restaurarMenu(menu.id)">
+                                    <i class="fas fa-trash-restore"></i>
+                                </button>
+                            </span>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
+         <!-- Pagination -->
+         <nav>
+                <ul class="pagination">
+                    <li v-if="menus.current_page > 1" class="page-item">
+                        <a href="#" aria-label="Previous" class="page-link">
+                            <span><i class="mdi mdi-skip-previous"></i></span>
+                        </a>
+                    </li>
+                    <li v-for="page in pagesNumberMenu" class="page-item"
+                        v-bind:class="[ page == isActivedMenu ? 'active' : '']">
+                        <a href="#" class="page-link"
+                            @click.prevent="changePagemenus(page)">@{{ page }}</a>
+                    </li>
+                    <li v-if="menus.current_page < menus.last_page" class="page-item">
+                        <a href="#" aria-label="Next" class="page-link"
+                            @click.prevent="changePageMenus(menus.current_page + 1)">
+                            <span aria-hidden="true"><i class="mdi mdi-skip-next"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
     </div>
 </div>
 @include('Sistema.menu.create')
+@include('Sistema.menu.show')
+@include('Sistema.menu.edit')

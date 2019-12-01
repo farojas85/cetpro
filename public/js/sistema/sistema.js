@@ -48,6 +48,7 @@ var app= new Vue({
             padre:{}
         },
         total_menus:0,
+        showdeletes_menu:false,
         padres:[],
         offset: 4,
         errores:[]
@@ -525,11 +526,20 @@ var app= new Vue({
             ))
         },
         getResultsMenus(page=1) {
-            axios.get('/menu/lista?page=' + page)
-            .then(response => {
-                this.menus = response.data
-                this.total_menus = this.menus.total
-            });
+            if(this.showdeletes_menu == false) {
+                axios.get('/menu/lista?page=' + page)
+                .then(response => {
+                    this.menus = response.data
+                    this.total_menus = this.menus.total
+                });
+            }
+            else {
+                axios.get('/menu/mostrarEliminados?page=' + page)
+                .then(response => {
+                    this.menus = response.data
+                    this.total_menus = this.menus.total
+                });
+            }
         },
         changePageMenus(page) {
             this.menus.current_page = page;
@@ -548,7 +558,180 @@ var app= new Vue({
             $('#menu-create').modal('show')
         },
         guardarMenu() {
-
+            axios.post('/menu/guardar',this.menu)
+                .then((response) => {
+                    swal.fire({
+                        type : 'success',
+                        title : 'Menús',
+                        text : response.data.mensaje,
+                        confirmButtonText: 'Aceptar',
+                        confirmButtonColor:"#1abc9c",
+                    }).then(respuesta => {
+                        if(respuesta.value) {
+                            $('#menu-create').modal('hide'),
+                            this.listarMenus(),
+                            this.getResultsMenus()
+                        }
+                    })
+                })
+                .catch((errors) => {
+                    if(response = errors.response) {
+                        this.errores = response.data.errors,
+                        console.clear()
+                    }
+                })
+        },
+        mostrarMenu(id){
+            axios.get('/menu/mostrar/',{params:{ id: id}})
+                .then(({data}) => (
+                    this.menu = data,
+                    this.menu.padre_id  = (this.menu.padre_id == 0) ? '' : this.menu.padre_id,
+                    $('#menu-show').modal('show')
+                ))
+        },
+        editarMenu(id){
+            axios.get('/menu/mostrar/',{params:{ id: id}})
+                .then(({data}) => (
+                    this.menu = data,
+                    this.menu.padre_id  = (this.menu.padre_id == 0) ? '' : this.menu.padre_id,
+                    this.listarMenuPadres(),
+                    $('#menu-edit').modal('show')
+                ))
+        },
+        actualizarMenu() {
+            axios.put('/menu/actualizar',this.menu)
+                .then((response) => {
+                    swal.fire({
+                        type : 'success',
+                        title : 'Menús',
+                        text : response.data.mensaje,
+                        confirmButtonText: 'Aceptar',
+                        confirmButtonColor:"#1abc9c",
+                    }).then(respuesta => {
+                        if(respuesta.value) {
+                            this.listarMenus()
+                            this.getResultsMenus()
+                            $('#menu-edit').modal('hide')
+                        }
+                    })
+                })
+                .catch((errors) => {
+                    if(response = errors.response) {
+                        this.errores = response.data.errors
+                        //console.clear()
+                    }
+                })
+        },
+        eliminarMenu(id){
+            swal.fire({
+                title:"¿Está Seguro de Eliminar?",
+                text:'No podrás revertirlo',
+                type:"question",
+                showCancelButton: true,
+                confirmButtonText:"Si",
+                confirmButtonColor:"#38c172",
+                cancelButtonText:"No",
+                cancelButtonColor:"#e3342f"
+            }).then( response => {
+                if(response.value){
+                    axios.post('/menu/eliminar',{id:id})
+                    .then((response) => (
+                        swal.fire({
+                            type : 'success',
+                            title : 'Menús',
+                            text : response.data.mensaje,
+                            confirmButtonText: 'Aceptar',
+                            confirmButtonColor:"#1abc9c",
+                        }).then(respuesta => {
+                            if(respuesta.value) {
+                                this.listarMenus()
+                                this.getResultsMenus()
+                            }
+                        })
+                    ))
+                    .catch((errors) => {
+                        if(response = errors.response) {
+                            this.errores = response.data.errors
+                        }
+                    })
+                }
+            }).catch(error => {
+                this.$Progress.fail()
+                swal.showValidationError(
+                    `Ocurrió un Error: ${error.response.status}`
+                )
+            })
+                //
+        },
+        mostrarEliminados() {
+            this.showdeletes_menu = true
+            axios.get('/menu/mostrarEliminados')
+            .then(response => {
+                this.menus = response.data
+                this.total_menus = this.menus.total
+                this.listarMenus()
+                this.getResultsMenus()
+            });
+        },
+        mostrarHabilitados() {
+            this.showdeletes_menu = false
+            axios.get('/menu/lista')
+            .then(response => {
+                this.menus = response.data
+                this.total_menus = this.menus.total
+                this.listarMenus()
+                this.getResultsMenus()
+            });
+        },
+        mostrarTodos() {
+            this.showdeletes_menu = false
+            axios.get('/menu/todos')
+            .then(response => {
+                this.menus = response.data
+                this.total_menus = this.menus.total
+                //this.getResultsMenus()
+            });
+        },
+        restaurarMenu(id) {
+            swal.fire({
+                title:"¿Está Seguro de Eliminar?",
+                text:'No podrás revertirlo',
+                type:"question",
+                showCancelButton: true,
+                confirmButtonText:"Si",
+                confirmButtonColor:"#38c172",
+                cancelButtonText:"No",
+                cancelButtonColor:"#e3342f"
+            }).then( response => {
+                if(response.value){
+                    axios.post('/menu/restaurar',{id:id})
+                    .then((response) => (
+                        swal.fire({
+                            type : 'success',
+                            title : 'Menús',
+                            text : response.data.mensaje,
+                            confirmButtonText: 'Aceptar',
+                            confirmButtonColor:"#1abc9c",
+                        }).then(respuesta => {
+                            if(respuesta.value) {
+                                this.showdeletes_menu = false
+                                this.listarMenus()
+                                this.getResultsMenus()
+                            }
+                        })
+                    ))
+                    .catch((errors) => {
+                        if(response = errors.response) {
+                            this.errores = response.data.errors
+                        }
+                    })
+                }
+            }).catch(error => {
+                this.$Progress.fail()
+                swal.showValidationError(
+                    `Ocurrió un Error: ${error.response.status}`
+                )
+            })
         }
     },
     created() {

@@ -1,6 +1,7 @@
 <?php
 
 Route::get('sistema','SistemaController@index')->name('sistema.index');
+Route::get('/configuracion', function () { return view('Configuracion.index'); });
 
 Route::group(['prefix' => 'role', 'middleware' => 'auth'], function(){
     Route::get('/', 'RoleController@index')->name('role.index');
@@ -30,6 +31,10 @@ Route::group(['prefix' => 'menu', 'middleware' => 'auth'], function(){
     Route::get('mostrar', 'MenuController@show')->name('menu.show');
     Route::put('actualizar','MenuController@update')->name('menu.update');
     Route::post('eliminar','MenuController@destroy')->name('menu.destroy');
+    Route::get('filtro','MenuController@filtro')->name('menu.filtro');
+    Route::get('mostrarEliminados','MenuController@mostrarEliminados')->name('menu.mostrarEliminados');
+    Route::get('todos','MenuController@mostrarTodos')->name('menu.mostrarTodos');
+    Route::post('restaurar','MenuController@restaurar')->name('menu.restaurar');
 });
 
 Route::group(['prefix' => 'menu-role', 'middleware' => 'auth'], function(){

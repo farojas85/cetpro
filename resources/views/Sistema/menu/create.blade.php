@@ -49,7 +49,7 @@
                 <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">
                     <i class="fa fa-times"></i> Cerrar
                 </button>
-                <button type="button" class="btn btn-success waves-effect waves-light" @click="">
+                <button type="button" class="btn btn-success waves-effect waves-light" @click="guardarMenu">
                     <i class="fa fa-save"></i> Guardar
                 </button>
             </div>

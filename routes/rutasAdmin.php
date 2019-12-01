@@ -90,6 +90,20 @@ Route::group(['prefix' => 'especialidad', 'middleware' => 'auth'], function(){
     Route::post('restaurar','EspecialidadController@restaurar')->name('especialidad.restaurar');
 });
 
+Route::group(['prefix' => 'modulo', 'middleware' => 'auth'], function(){
+    Route::get('/', 'ModuloController@index')->name('modulo.index');
+    Route::get('todos','ModuloController@todos')->name('modulo.todos');
+    Route::get('habilitados','ModuloController@habilitados')->name('modulo.habilitados');
+    Route::get('eliminados','ModuloController@eliminados')->name('modulo.eliminados');
+    Route::post('guardar','ModuloController@store')->name('modulo.store');
+    Route::get('mostrar', 'ModuloController@show')->name('modulo.show');
+    Route::put('actualizar','ModuloController@update')->name('modulo.update');
+    Route::get('filtro','ModuloController@filtro')->name('modulo.filtro');
+    Route::post('eliminar-temporal','ModuloController@destroyTemporal')->name('modulo.destroy-temporal');
+    Route::post('eliminar-permanente','ModuloController@destroyPermanente')->name('modulo.destroy-permanente');
+    Route::post('restaurar','ModuloController@restaurar')->name('modulo.restaurar');
+});
+
 Route::group(['prefix' => 'tabla', 'middleware' => 'auth'], function(){
     Route::get('/', 'ConfiguracionesController@index')->name('tabla.index');
 });

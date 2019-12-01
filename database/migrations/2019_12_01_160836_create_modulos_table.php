@@ -6,24 +6,19 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateModulosTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('modulos', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('especialidad_id')->nullable()->index();
+            $table->foreign('especialidad_id')->references('id')->on('especialidads');
+            $table->string('nombre');
+            $table->tinyInteger('estado')->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('modulos');

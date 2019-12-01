@@ -10,4 +10,9 @@ class Especialidad extends Model
     use SoftDeletes;
 
     protected $fillable=['id','nombre','estado'];
+
+    public function modulos()
+    {
+        return $this->hasMany(Modulo::class);
+    }
 }

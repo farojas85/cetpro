@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 class EspecialidadController extends Controller
 {
 
+    public function filtro()
+    {
+        return Especialidad::select('id','nombre')->get();
+    }
+
     public function todos()
     {
         return Especialidad::withTrashed()->paginate(5);

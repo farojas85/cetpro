@@ -9,13 +9,46 @@ var app= new Vue({
             estado:''
         },
         show_especialidad:'habilitados',
+        especialidad_filtro:[],
+        modulos:[],
+        total_modulos:0,
+        modulo:{
+            id:'',
+            especialidad_id:'',
+            nombre:'',
+            estado:'',
+        },
+        show_modulo:'habilitados',
         offset:4,
         errores:[]
     },
     created() {
         this.mostrarEspecialidadHabilitados()
+        this.mostrarModuloHabilitados()
     },
     computed: {
+        isActivedModulo() {
+            return this.modulos.current_page;
+        },
+        pagesNumberModulo() {
+            if (!this.modulos.to) {
+                return [];
+            }
+            var from = this.modulos.current_page - this.offset;
+            if (from < 1) {
+                from = 1;
+            }
+            var to = from + (this.offset * 2);
+            if (to >= this.modulos.last_page) {
+                to = this.modulos.last_page;
+            }
+            var pagesArray = [];
+            while (from <= to) {
+                pagesArray.push(from);
+                from++;
+            }
+            return pagesArray;
+        },
         isActivedEspecialidad() {
             return this.especialidades.current_page;
         },
@@ -295,6 +328,268 @@ var app= new Vue({
                     })
                 }
             })
-        }
+        },
+        filtroEspecialidad()
+        {
+            axios.get('/especialidad/filtro').then(({ data }) => (
+                this.especialidad_filtro = data
+            ))
+        },
+        listarModulos() {
+            axios.get('/modulo/'+this.show_modulo).then(({ data }) => (
+               this.modulos = data,
+               this.total_modulos = this.modulos.total
+            ))
+        },
+        getResultsModulos(page=1) {
+            switch(this.show_modulo)
+            {
+                case 'todos':
+                    axios.get('/modulo/todos?page=' + page)
+                    .then(response => {
+                        this.modulos = response.data
+                        this.total_modulos = this.modulos.total
+                    }) ; break;
+                case 'habilitados':
+                    axios.get('/modulo/habilitados?page=' + page)
+                    .then(response => {
+                        this.modulos = response.data
+                        this.total_modulos = this.modulos.total
+                    }) ; break;
+                case 'eliminados':
+                    axios.get('/modulo/eliminados?page=' + page)
+                    .then(response => {
+                        this.modulos = response.data
+                        this.total_modulos = this.modulos.total
+                    }) ; break;
+            }
+        },
+        changePageModulos(page) {
+            this.modulos.current_page = page;
+            this.getResultsModulos(page)
+        },
+        mostrarModuloTodos() {
+           this.show_modulo = 'todos'
+           this.listarModulos()
+           this.getResultsModulos();
+        },
+        mostrarModuloHabilitados() {
+            this.show_modulo ='habilitados'
+            this.listarModulos()
+            this.getResultsModulos()
+        },
+        mostrarModuloEliminados() {
+            this.show_modulo = 'eliminados'
+            this.listarModulos()
+            this.getResultsModulos()
+        },
+        nuevoModulo() {
+            this.errores=[]
+            this.modulo.id=''
+            this.modulo.especialidad_id=''
+            this.modulo.nombre=''
+            this.modulo.estado=''
+            this.filtroEspecialidad()
+            $('#modulo-create').modal('show')
+        },
+        guardarModulo() {
+            axios.post('/modulo/guardar',this.modulo)
+                .then((response) => {
+                    swal.fire({
+                        type : 'success',
+                        title : 'Módulos',
+                        text : response.data.mensaje,
+                        confirmButtonText: 'Aceptar',
+                        confirmButtonColor:"#1abc9c",
+                    }).then(respuesta => {
+                        if(respuesta.value) {
+                            $('#modulo-create').modal('hide'),
+                            this.listarModulos('habilitados')
+                            this.getResultsModulos(1,'habilitados')
+                        }
+                    })
+                })
+                .catch((errors) => {
+                    console.log(errors.response)
+                    if(response = errors.response) {
+                        this.errores = response.data.errors
+                        //console.clear()
+                    }
+                })
+        },
+        mostrarModulo(id) {
+            axios.get('modulo/mostrar',{params: {id:id}})
+            .then((response) => {
+                this.filtroEspecialidad()
+                this.modulo =response.data
+                $('#modulo-show').modal('show')
+            })
+        },
+        editarModulo(id) {
+            axios.get('modulo/mostrar',{params: {id:id}})
+            .then((response) => {
+                this.modulo =response.data
+                $('#modulo-edit').modal('show')
+            })
+        },
+        actualizarModulo() {
+            axios.put('/modulo/actualizar',this.modulo)
+                .then((response) => {
+                    swal.fire({
+                        type : 'success',
+                        title : 'Módulos',
+                        text : response.data.mensaje,
+                        confirmButtonText: 'Aceptar',
+                        confirmButtonColor:"#1abc9c",
+                    }).then(respuesta => {
+                        if(respuesta.value) {
+                            $('#modulo-edit').modal('hide'),
+                            this.listarModulos()
+                            this.getResultsModulos()
+                        }
+                    })
+                })
+                .catch((errors) => {
+                    console.log(errors.response)
+                    if(response = errors.response) {
+                        this.errores = response.data.errors
+                        //console.clear()
+                    }
+                })
+        },
+        eliminarModulo(id) {
+            axios.get('modulo/mostrar',{params: {id:id}})
+            .then((response) => {
+                this.modulo =response.data
+            })
+            swal.fire({
+                title:"¿Está Seguro de Eliminar?",
+                text:'Módulo: '+this.modulo.nombre,
+                type:"question",
+                showCancelButton: true,
+                confirmButtonText:"<i class='fas fa-trash-alt'></i> A Papelera",
+                confirmButtonColor:"#6610f2",
+                cancelButtonText:"<i class='fas fa-eraser'></i> Permanentemente",
+                cancelButtonColor:"#e3342f"
+            }).then( (response) => {
+                if(response.value) {
+                    this.eliminarTemporalModulo(id)
+                }
+                else if( response.dismiss === swal.DismissReason.cancel) {
+                   this.eliminarPermanenteModulo(id)
+                }
+            }).catch(error => {
+                swal.showValidationError(
+                    `Ocurrió un Error: ${error.response.status}`
+                )
+            })
+        },
+        eliminarTemporalModulo(id) {
+            axios.post('/modulo/eliminar-temporal',{id:id})
+            .then((response) => (
+                swal.fire({
+                    type : 'success',
+                    title : 'Módulos',
+                    text : response.data.mensaje,
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor:"#1abc9c",
+                }).then(respuesta => {
+                    if(respuesta.value) {
+                       this.listarModulos()
+                       this.getResultsModulos()
+                    }
+                })
+            ))
+            .catch((errors) => {
+                if(response = errors.response) {
+                    this.errores = response.data.errors
+                }
+            })
+        },
+        eliminarPermanenteModulo(id) {
+            axios.post('/modulo/eliminar-permanente',{id:id})
+            .then((response) => (
+                swal.fire({
+                    type : 'success',
+                    title : 'Módulos',
+                    text : response.data.mensaje,
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor:"#1abc9c",
+                }).then(respuesta => {
+                    if(respuesta.value) {
+                        this.listarModulos()
+                        this.getResultsModulos()
+                    }
+                })
+            ))
+            .catch((errors) => {
+                if(response = errors.response) {
+                    this.errores = response.data.errors
+                    swal.fire({
+                        type : 'error',
+                        title : 'Especialidades',
+                        text : this.errores,
+                        confirmButtonText: 'Aceptar',
+                        confirmButtonColor:"#1abc9c",
+                    })
+                }
+            })
+        },
+        restaurarModulo(id) {
+            axios.get('modulo/mostrar',{params: {id:id}})
+            .then((response) => {
+                this.modulo =response.data
+            })
+            swal.fire({
+                title:"¿Está Seguro de Restaurar?",
+                text:'Módulo: '+this.modulo.nombre,
+                type:"question",
+                showCancelButton: true,
+                confirmButtonText:"Si",
+                confirmButtonColor:"#28a745",
+                cancelButtonText:"No",
+                cancelButtonColor:"#dc3545"
+            }).then( (response) => {
+                if(response.value) {
+                    axios.post('/modulo/restaurar',{id:id})
+                    .then((response) => (
+                        swal.fire({
+                            type : 'success',
+                            title : 'Módulo: '+this.especialidad.nombre,
+                            text : response.data.mensaje,
+                            confirmButtonText: 'Aceptar',
+                            confirmButtonColor:"#1abc9c",
+                        }).then(respuesta => {
+                            if(respuesta.value) {
+                                this.mostrarModuloHabilitados()
+                            }
+                        })
+                    ))
+                    .catch((errors) => {
+                        if(response = errors.response) {
+                            this.errores = response.data.errors
+                            swal.fire({
+                                type : 'error',
+                                title : 'Módulos',
+                                text : this.errores,
+                                confirmButtonText: 'Aceptar',
+                                confirmButtonColor:"#1abc9c",
+                            })
+                        }
+                    })
+                }
+            }).catch((errors) => {
+                if(response = errors.response) {
+                    this.errores = response.data.errors
+                    swal.fire({
+                        type : 'error',
+                        title : 'Módulos',
+                        text : this.errores,
+                        confirmButtonText: 'Aceptar',
+                        confirmButtonColor:"#1abc9c",
+                    })
+                }
+            })
+        },
     }
 })

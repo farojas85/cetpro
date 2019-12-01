@@ -7,79 +7,93 @@ use Illuminate\Http\Request;
 
 class ModuloController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function todos()
     {
-        //
+        return Modulo::with('especialidad')->withTrashed()->paginate(5);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function habilitados()
     {
-        //
+        return Modulo::with('especialidad')->paginate(5);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function eliminados()
+    {
+        return Modulo::with('especialidad')->onlyTrashed()->paginate(5);
+    }
+
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'especialidad_id' => 'required',
+            'nombre' => 'required|string|max:191'
+        ]);
+
+        $modulo = Modulo::create([
+            'especialidad_id' => $request->especialidad_id,
+            'nombre' => $request->nombre
+        ]);
+
+        return response()->json([
+            'Modulo' => $modulo,
+            'mensaje' => 'Módulo Agregado Satisfactoriamente'
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Modulo  $modulo
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Modulo $modulo)
+    public function show(Request $request)
     {
-        //
+        return Modulo::with('especialidad')->withTrashed()->findOrFail($request->id);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Modulo  $modulo
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Modulo $modulo)
+    public function update(Request $request)
     {
-        //
+        $request->validate([
+            'especialidad_id' => 'required',
+            'nombre' => 'required|string|max:191'
+        ]);
+
+        $modulo = Modulo::where('id',$request->id)
+                        ->update([
+                            'especialidad_id' => $request->especialidad_id,
+                            'nombre' => $request->nombre,
+                            'estado' => $request->estado
+                        ]);
+
+        return response()->json([
+            'Modulo' => $modulo,
+            'mensaje' => 'Módulo Actualizado Satisfactoriamente'
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Modulo  $modulo
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Modulo $modulo)
+    public function destroyTemporal(Request $request)
     {
-        //
+        $Modulo = Modulo::withTrashed()
+                                    ->where('id',$request->id)->first()->delete();
+
+        return response()->json([
+            'Modulo' => $Modulo,
+            'mensaje' => 'Módulo ha sido enviado a Papelera de Reciclaje'
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Modulo  $modulo
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Modulo $modulo)
+    public function destroyPermanente(Request $request)
     {
-        //
+        $modulo = Modulo::withTrashed()
+                                    ->where('id',$request->id)->first()->forceDelete();
+
+        return response()->json([
+            'Modulo' => $modulo,
+            'mensaje' => 'Módulo ha sido eliminado Satisfactoriamente'
+        ]);
+    }
+
+    public function restaurar(Request $request) {
+        $modulo = Modulo::onlyTrashed()
+                        ->where('id',$request->id)->first()->restore();
+
+        return response()->json([
+            'especialidad' => $modulo,
+            'mensaje' => 'Módulo ha sido restaurado Satisfactoriamente'
+        ]);
     }
 }

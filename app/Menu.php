@@ -76,6 +76,7 @@ class Menu extends Model
         $padres = $menus->menusPadres($front);
         return $menus->menusHijos($padres);
     }
+
     public static function menusHijosxPadres($padre_id){
         return Menu::where('padre_id','=',$padre_id)->orderBy('orden')->get();
     }

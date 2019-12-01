@@ -19,11 +19,6 @@ class PermissionRoleController extends Controller
         return Role::with('permissions')->where('roles.id',$request->id)->get();
     }
 
-    public function create()
-    {
-        //
-    }
-
     public function store(Request $request)
     {
         $role = Role::where('id',$request->role_id)->first();

@@ -49,6 +49,11 @@ var app= new Vue({
         },
         total_menus:0,
         showdeletes_menu:false,
+        menu_role:{
+            role_id:'',
+            role_name:'',
+            menu_id:[]
+        },
         padres:[],
         offset: 4,
         errores:[]
@@ -732,7 +737,50 @@ var app= new Vue({
                     `Ocurrió un Error: ${error.response.status}`
                 )
             })
-        }
+        },
+        listarMenuRoles(id) {
+            this.menu_role.role_id = id
+            axios.get('/menu-role/listarMenuRoles',{params: {id: id}})
+                .then((response ) => {
+                    let menus =response.data
+                    this.menu_role.menu_id = []
+                    this.menu_role.role_name = menus[0].name
+                    if(menus.length >0 )
+                    {
+                        if(menus[0].menus.length > 0)
+                        {
+                            for(let i=0; i<menus[0].menus.length; i++)
+                            {
+                                this.menu_role.menu_id.push(menus[0].menus[i].id)
+                            }
+                        }
+                    }
+                    console.log(menus)
+                })
+        },
+        guardarRoleMenu()
+        {
+            axios.post('/menu-role/guardar',this.menu_role)
+                .then((response) => (
+                    swal.fire({
+                        type : 'success',
+                        title : 'Menús / Roles',
+                        text : response.data.mensaje,
+                        confirmButtonText: 'Aceptar',
+                        confirmButtonColor:"#1abc9c",
+                    }).then(respuesta => {
+                        if(respuesta.value) {
+                            this.listarMenuRoles(this.menu_role.role_id)
+                        }
+                    })
+                ))
+                .catch((errors) => {
+                    if(response = errors.response) {
+                        this.errores = response.data.errors,
+                        console.clear()
+                    }
+                })
+        },
     },
     created() {
         this.listarRoles()

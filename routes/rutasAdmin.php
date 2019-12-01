@@ -71,6 +71,11 @@ Route::group(['prefix' => 'menu', 'middleware' => 'auth'], function(){
     Route::post('eliminar','MenuController@destroy')->name('menu.destroy');
 });
 
+Route::group(['prefix' => 'menu-role', 'middleware' => 'auth'], function(){
+    Route::get('listarMenuRoles','RoleController@listarMenuRoles')->name('menu-role.listar-menu-roles');
+    Route::post('guardar','RoleController@storeMenus')->name('menu-role.storeMenus');
+});
+
 Route::group(['prefix' => 'tabla', 'middleware' => 'auth'], function(){
     Route::get('/', 'ConfiguracionesController@index')->name('tabla.index');
 });

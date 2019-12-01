@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Menu;
 use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 
@@ -50,12 +51,6 @@ class RoleController extends Controller
                     ->where('id',$request->id)->first();
     }
 
-    public function edit($id)
-    {
-        //
-    }
-
-
     public function update(Request $request)
     {
         $rule = [
@@ -96,5 +91,19 @@ class RoleController extends Controller
     public function filtro()
     {
         return Role::select('id','name')->orderBy('id','asc')->get();
+    }
+
+    public function listarMenuRoles(Request $request)
+    {
+        return Role::with('menus')->where('roles.id',$request->id)->get();
+    }
+
+    public function storeMenus(Request $request)
+    {
+        $role = Role::where('id',$request->role_id)->first();
+
+        $role->menus()->sync($request->menu_id);
+
+        return response()->json(['mensaje' => 'Menús asignados Satisfactoriamente']);
     }
 }

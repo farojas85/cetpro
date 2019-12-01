@@ -48,6 +48,11 @@
                                     href="#menus-view" role="tab"
                                     aria-controls="menus-view" aria-selected="false">Men&uacute;s</a>
                             </li>
+                            <li class="nav-item">
+                                    <a class="nav-link" id="menu-role-view-tab" data-toggle="pill"
+                                        href="#menu-role-view" role="tab"
+                                        aria-controls="menus-view" aria-selected="false">Men&uacute;s/Roles</a>
+                                </li>
                         </ul>
                     </div>
                     <div class="card-body">
@@ -71,6 +76,10 @@
                             <div class="tab-pane fade" id="menus-view" role="tabpanel"
                                 aria-labelledby="custom-tabs-three-settings-tab">
                                 @include('Sistema.menu.index')
+                            </div>
+                            <div class="tab-pane fade" id="menu-role-view" role="tabpanel"
+                                aria-labelledby="custom-tabs-three-settings-tab">
+                                @include('Sistema.menu_role.index')
                             </div>
                         </div>
                     </div>

@@ -76,6 +76,20 @@ Route::group(['prefix' => 'menu-role', 'middleware' => 'auth'], function(){
     Route::post('guardar','RoleController@storeMenus')->name('menu-role.storeMenus');
 });
 
+Route::group(['prefix' => 'especialidad', 'middleware' => 'auth'], function(){
+    Route::get('/', 'EspecialidadController@index')->name('especialidad.index');
+    Route::get('todos','EspecialidadController@todos')->name('especialidad.todos');
+    Route::get('habilitados','EspecialidadController@habilitados')->name('especialidad.habilitados');
+    Route::get('eliminados','EspecialidadController@eliminados')->name('especialidad.eliminados');
+    Route::post('guardar','EspecialidadController@store')->name('especialidad.store');
+    Route::get('mostrar', 'EspecialidadController@show')->name('especialidad.show');
+    Route::put('actualizar','EspecialidadController@update')->name('especialidad.update');
+    Route::get('filtro','EspecialidadController@filtro')->name('especialidad.filtro');
+    Route::post('eliminar-temporal','EspecialidadController@destroyTemporal')->name('especialidad.destroy-temporal');
+    Route::post('eliminar-permanente','EspecialidadController@destroyPermanente')->name('especialidad.destroy-permanente');
+    Route::post('restaurar','EspecialidadController@restaurar')->name('especialidad.restaurar');
+});
+
 Route::group(['prefix' => 'tabla', 'middleware' => 'auth'], function(){
     Route::get('/', 'ConfiguracionesController@index')->name('tabla.index');
 });

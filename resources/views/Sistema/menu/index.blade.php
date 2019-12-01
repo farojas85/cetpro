@@ -48,7 +48,7 @@
                     <tr v-if="total_menus==0">
                         <td colspan="7" class="text-danger text-center">--DATOS NO REGISTRADOS TABLA VAC&Iacute;A--</td>
                     </tr>
-                    <tr v-else v-for="(menu in menus.data" :key="menu.id">
+                    <tr v-else v-for="menu in menus.data" :key="menu.id">
                         <td>@{{menu.id}}</td>
                         <td>@{{menu.descripcion}}</td>
                         <td>@{{menu.enlace}}</td>
@@ -87,27 +87,27 @@
                 </tbody>
             </table>
         </div>
-         <!-- Pagination -->
-         <nav>
-                <ul class="pagination">
-                    <li v-if="menus.current_page > 1" class="page-item">
-                        <a href="#" aria-label="Previous" class="page-link">
-                            <span><i class="mdi mdi-skip-previous"></i></span>
-                        </a>
-                    </li>
-                    <li v-for="page in pagesNumberMenu" class="page-item"
-                        v-bind:class="[ page == isActivedMenu ? 'active' : '']">
-                        <a href="#" class="page-link"
-                            @click.prevent="changePagemenus(page)">@{{ page }}</a>
-                    </li>
-                    <li v-if="menus.current_page < menus.last_page" class="page-item">
-                        <a href="#" aria-label="Next" class="page-link"
-                            @click.prevent="changePageMenus(menus.current_page + 1)">
-                            <span aria-hidden="true"><i class="mdi mdi-skip-next"></i></span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+        <!-- Pagination -->
+        <nav>
+            <ul class="pagination">
+                <li v-if="menus.current_page > 1" class="page-item">
+                    <a href="#" aria-label="Previous" class="page-link">
+                        <span><i class="fas fa-fast-backward"></i></span>
+                    </a>
+                </li>
+                <li v-for="page in pagesNumberMenu" class="page-item"
+                    v-bind:class="[ page == isActivedMenu ? 'active' : '']">
+                    <a href="#" class="page-link"
+                        @click.prevent="changePagemenus(page)">@{{ page }}</a>
+                </li>
+                <li v-if="menus.current_page < menus.last_page" class="page-item">
+                    <a href="#" aria-label="Next" class="page-link"
+                        @click.prevent="changePageMenus(menus.current_page + 1)">
+                        <span aria-hidden="true"><i class="fas fa-fast-forward"></i></span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </div>
 @include('Sistema.menu.create')

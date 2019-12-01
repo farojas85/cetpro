@@ -61,7 +61,7 @@
             <ul class="pagination">
                 <li v-if="permissions.current_page > 1" class="page-item">
                     <a href="#" aria-label="Previous" class="page-link">
-                        <span><i class="mdi mdi-skip-previous"></i></span>
+                        <span><i class="mfas fa-fast-backward"></i></span>
                     </a>
                 </li>
                 <li v-for="page in pagesNumberPermission" class="page-item"
@@ -72,7 +72,7 @@
                 <li v-if="permissions.current_page < permissions.last_page" class="page-item">
                     <a href="#" aria-label="Next" class="page-link"
                         @click.prevent="changePage(permissions.current_page + 1)">
-                        <span aria-hidden="true"><i class="mdi mdi-skip-next"></i></span>
+                        <span aria-hidden="true"><i class="fas fa-fast-forward"></i></span>
                     </a>
                 </li>
             </ul>

@@ -99,9 +99,24 @@ Route::group(['prefix' => 'modulo', 'middleware' => 'auth'], function(){
     Route::get('mostrar', 'ModuloController@show')->name('modulo.show');
     Route::put('actualizar','ModuloController@update')->name('modulo.update');
     Route::get('filtro','ModuloController@filtro')->name('modulo.filtro');
+    Route::get('filtro-especialidad','ModuloController@filtroPorEspecialidad')->name('modulo.filtro-especialidad');
     Route::post('eliminar-temporal','ModuloController@destroyTemporal')->name('modulo.destroy-temporal');
     Route::post('eliminar-permanente','ModuloController@destroyPermanente')->name('modulo.destroy-permanente');
     Route::post('restaurar','ModuloController@restaurar')->name('modulo.restaurar');
+});
+
+Route::group(['prefix' => 'asignatura', 'middleware' => 'auth'], function(){
+    Route::get('/', 'AsignaturaController@index')->name('asignatura.index');
+    Route::get('todos','AsignaturaController@todos')->name('asignatura.todos');
+    Route::get('habilitados','AsignaturaController@habilitados')->name('asignatura.habilitados');
+    Route::get('eliminados','AsignaturaController@eliminados')->name('asignatura.eliminados');
+    Route::post('guardar','AsignaturaController@store')->name('asignatura.store');
+    Route::get('mostrar', 'AsignaturaController@show')->name('asignatura.show');
+    Route::put('actualizar','AsignaturaController@update')->name('asignatura.update');
+    Route::get('filtro','AsignaturaController@filtro')->name('asignatura.filtro');
+    Route::post('eliminar-temporal','AsignaturaController@destroyTemporal')->name('asignatura.destroy-temporal');
+    Route::post('eliminar-permanente','AsignaturaController@destroyPermanente')->name('asignatura.destroy-permanente');
+    Route::post('restaurar','AsignaturaController@restaurar')->name('asignatura.restaurar');
 });
 
 Route::group(['prefix' => 'tabla', 'middleware' => 'auth'], function(){

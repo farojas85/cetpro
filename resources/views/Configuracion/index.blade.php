@@ -52,7 +52,7 @@
                             </div>
                             <div class="tab-pane fade" id="custom-tabs-three-messages" role="tabpanel"
                                 aria-labelledby="custom-tabs-three-messages-tab">
-                                {{-- @include('Sistema.permission.index') --}}
+                                @include('Configuracion.asignatura.index')
                             </div>
                         </div>
                     </div>

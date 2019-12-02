@@ -15,4 +15,9 @@ class Modulo extends Model
     {
         return $this->belongsTo(Especialidad::class);
     }
+
+    public function asignaturas()
+    {
+        return $this->hasMany(Asignatura::class);
+    }
 }

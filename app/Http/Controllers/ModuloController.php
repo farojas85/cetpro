@@ -7,6 +7,16 @@ use Illuminate\Http\Request;
 
 class ModuloController extends Controller
 {
+    public function filtro()
+    {
+        return Modulo::select('id','nombre')->get();
+    }
+
+    public function filtroPorEspecialidad(Request $request)
+    {
+        return Modulo::where('especialidad_id',$request->id)->get();
+    }
+
     public function todos()
     {
         return Modulo::with('especialidad')->withTrashed()->paginate(5);

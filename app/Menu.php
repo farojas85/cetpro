@@ -49,7 +49,7 @@ class Menu extends Model
                 $query->where('role_id',$role_id)->orderby('padre_id');
             })->where('padre_id',0)->orderby('orden')->get()->toArray();
         } else {
-            return $this->orderby('padre_id')->orderby('orden')->get()->toArray();
+            return Menu::orderby('padre_id')->orderby('orden')->get()->toArray();
         }
     }
     public function menusHijos($padres)

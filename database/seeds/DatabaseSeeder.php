@@ -10,7 +10,8 @@ class DatabaseSeeder extends Seeder
             NavbarsTableSeeder::class,
             SidebarsTableSeeder::class,
             BrandlogosTableSeeder::class,
-            MenusTableSeeder::class
+            MenusTableSeeder::class,
+            TipoDocumentosTableSeeder::class
         ]);
     }
 }

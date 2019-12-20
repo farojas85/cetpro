@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "43145d5e5a91061d97e07bdf9dd1a536",
+    "content-hash": "e8ac0267e79e6da3e8acd66e0e6b79e9",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -656,16 +656,16 @@
         },
         {
             "name": "giansalex/peru-consult",
-            "version": "v4.0.0",
+            "version": "v4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giansalex/peru-consult.git",
-                "reference": "4f38c36f5e1fe44752f30fca99d96c38916f54fe"
+                "reference": "48d00e709dc9995060c1a8321f18a00134c958e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giansalex/peru-consult/zipball/4f38c36f5e1fe44752f30fca99d96c38916f54fe",
-                "reference": "4f38c36f5e1fe44752f30fca99d96c38916f54fe",
+                "url": "https://api.github.com/repos/giansalex/peru-consult/zipball/48d00e709dc9995060c1a8321f18a00134c958e4",
+                "reference": "48d00e709dc9995060c1a8321f18a00134c958e4",
                 "shasum": ""
             },
             "require": {
@@ -678,6 +678,7 @@
             "require-dev": {
                 "behat/behat": "^3.5",
                 "clue/block-react": "^1.3",
+                "phpstan/phpstan": "^0.11.15",
                 "phpunit/phpunit": "^7"
             },
             "type": "library",
@@ -706,7 +707,7 @@
                 "ruc",
                 "sunat"
             ],
-            "time": "2019-08-19T01:09:29+00:00"
+            "time": "2019-10-19T03:28:25+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",

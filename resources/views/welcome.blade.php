@@ -65,10 +65,6 @@
                         <a href="{{ url('/home') }}" class="btn btn-success">Home</a>
                     @else
                         <a href="{{ route('login') }}" class="btn btn-primary">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
                     @endauth
                 </div>
             @endif

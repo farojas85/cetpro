@@ -119,6 +119,26 @@ Route::group(['prefix' => 'asignatura', 'middleware' => 'auth'], function(){
     Route::post('restaurar','AsignaturaController@restaurar')->name('asignatura.restaurar');
 });
 
+Route::group(['prefix' => 'tipo-documento', 'middleware' => 'auth'], function(){
+    Route::get('filtro','TipoDocumentoController@filtro')->name('tipo-documento.filtro');
+});
+
+Route::group(['prefix' => 'estudiante', 'middleware' => 'auth'], function(){
+    Route::get('/', 'EstudianteController@index')->name('estudiante.index');
+    Route::get('todos','EstudianteController@todos')->name('estudiante.todos');
+    Route::get('habilitados','EstudianteController@habilitados')->name('estudiante.habilitados');
+    Route::get('eliminados','EstudianteController@eliminados')->name('estudiante.eliminados');
+    Route::get('mostrar', 'EstudianteController@show')->name('estudiante.show');
+    Route::get('filtro','EstudianteController@filtro')->name('estudiante.filtro');
+    Route::get('buscar-dni','EstudianteController@buscarDni')->name('estudiante.buscar-dni');
+    Route::get('buscar-estudiante','EstudianteController@buscarEstudiante')->name('estudiante.buscar-estudiante');
+    Route::post('guardar','EstudianteController@store')->name('estudiante.store');
+    Route::put('actualizar','EstudianteController@update')->name('estudiante.update');
+    Route::post('eliminar-temporal','EstudianteController@destroyTemporal')->name('estudiante.destroy-temporal');
+    Route::post('eliminar-permanente','EstudianteController@destroyPermanente')->name('estudiante.destroy-permanente');
+    Route::post('restaurar','EstudianteController@restaurar')->name('estudiante.restaurar');
+});
+
 Route::group(['prefix' => 'tabla', 'middleware' => 'auth'], function(){
     Route::get('/', 'ConfiguracionesController@index')->name('tabla.index');
 });

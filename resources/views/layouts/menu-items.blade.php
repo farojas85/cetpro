@@ -22,12 +22,12 @@
         <a href="" class="nav-link {{$active}}">
             <i class="{{$item['imagen']}}"></i>
             <p>{{$item['descripcion']}} </p>
-            <span class="menu-arrow"></span>
+            <i class="right fas fa-angle-left"></i>
         </a>
         <ul  class="nav nav-treeview">
             @foreach ($item["submenu"] as $submenu)
             <li class="nav-item">
-                <a href="{{$submenu['enlace']}}" class="nav-link {{$active}}">
+                <a href="{{$submenu['enlace']}}" class="nav-link {{ Request::path() == $submenu['enlace'] ? 'active' : '' }}">
                     <i class="nav-icon {{$submenu['imagen']}}"></i>
                     <p>{{$submenu['descripcion']}}</p>
                 </a>

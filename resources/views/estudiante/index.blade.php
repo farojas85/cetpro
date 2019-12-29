@@ -86,21 +86,21 @@
                                                 <td>
                                                     <span v-if="estudiante.deleted_at==null">
                                                         <button type="button" class="btn btn-info btn-xs"
-                                                            title="Mostrar Estudiante" @click="">
+                                                            title="Mostrar Estudiante" @click="mostrar(estudiante.id)">
                                                             <i class="fas fa-eye"></i>
                                                         </button>
                                                         <button type="button" class="btn btn-warning btn-xs"
-                                                            title="Editar Estudiante" @click="" >
+                                                            title="Editar Estudiante" @click="editar(estudiante.id)" >
                                                             <i class="fas fa-edit"></i>
                                                         </button>
                                                         <button type="button" class="btn btn-danger btn-xs"
-                                                            title="Eliminar Estudiante" @click="">
+                                                            title="Eliminar Estudiante" @click="eliminar(estudiante.id)">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
                                                     </span>
                                                     <span v-else>
                                                         <button type="button" class="btn btn-danger btn-xs"
-                                                            title="Restaurar Estudiante" @click="">
+                                                            title="Restaurar Estudiante" @click="restaurar(estudiante.id)">
                                                             <i class="fas fa-trash-restore"></i>
                                                         </button>
                                                     </span>

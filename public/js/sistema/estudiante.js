@@ -138,6 +138,37 @@ var app= new Vue({
             this.listarTipoDocumentos()
             $('#estudiante-create').modal('show')
         },
+        obtener(id){
+            axios.get('estudiante/mostrar',{params:{id:id}})
+            .then((response) => {
+                this.estudiante = response.data
+            })
+        },
+        limpiar() {
+            this.estudiante.id = ''
+            this.estudiante.tipo_documento_id=''
+            this.estudiante.numero_documento=''
+            this.estudiante.nombres=''
+            this.estudiante.apellido_paterno=''
+            this.estudiante.apellido_materno=''
+            this.estudiante.foto=''
+            this.estudiante.sexo=''
+            this.estudiante.direccion=''
+            this.estudiante.telefono=''
+            this.estudiante.estado=''
+        },
+        mostrar(id) {
+            this.limpiar()
+            this.listarTipoDocumentos()
+            this.obtener(id)
+            $('#estudiante-show').modal('show')
+        },
+        editar(id) {
+            this.limpiar()
+            this.listarTipoDocumentos()
+            this.obtener(id)
+            $('#estudiante-edit').modal('show')
+        },
         guardar() {
             axios.post('estudiante/guardar',this.estudiante)
             .then((response) => {
@@ -162,7 +193,170 @@ var app= new Vue({
                     console.clear()
                 }
             })
-        }
+        },
+        actualizar() {
+            axios.post('estudiante/actualizar',this.estudiante)
+            .then((response) => {
+                swal.fire({
+                    type : 'success',
+                    title : 'Estudiantes',
+                    text : response.data.mensaje,
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor:"#1abc9c",
+                }).then(respuesta => {
+                    if(respuesta.value) {
+                        $('#estudiante-edit').modal('hide')
+                        this.show_estudiante = 'habilitados'
+                        this.listar()
+                        this.getResults()
+                    }
+                })
+            })
+            .catch((errors) => {
+                if(response = errors.response) {
+                    this.errores = response.data.errors
+                    console.clear()
+                }
+            })
+        },
+        eliminar(id) {
+            axios.get('estudiante/mostrar',{params: {id:id}})
+            .then((response) => {
+                this.estudiante =response.data
+            })
+            swal.fire({
+                title:"¿Está Seguro de Eliminar?",
+                text:'Estudiante: '+this.estudiante.nombres+' '+this.estudiante.apellido_paterno+' '+this.estudiante.apellido_materno,
+                type:"question",
+                showCancelButton: true,
+                confirmButtonText:"<i class='fas fa-trash-alt'></i> A Papelera",
+                confirmButtonColor:"#6610f2",
+                cancelButtonText:"<i class='fas fa-eraser'></i> Permanentemente",
+                cancelButtonColor:"#e3342f"
+            }).then( (response) => {
+                if(response.value) {
+                    this.eliminarTemporal(id)
+                }
+                else if( response.dismiss === swal.DismissReason.cancel) {
+                   this.eliminarPermanente(id)
+                }
+            }).catch(error => {
+                swal.showValidationError(
+                    `Ocurrió un Error: ${error.response.status}`
+                )
+            })
+        },
+        eliminarTemporal(id) {
+            axios.post('/estudiante/eliminar-temporal',{id:id})
+            .then((response) => (
+                swal.fire({
+                    type : 'success',
+                    title : 'Estudiantes',
+                    text : response.data.mensaje,
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor:"#1abc9c",
+                }).then(respuesta => {
+                    if(respuesta.value) {
+                        this.show_estudiante='habilitados'
+                        this.listar()
+                        this.getResults()
+                    }
+                })
+            ))
+            .catch((errors) => {
+                if(response = errors.response) {
+                    this.errores = response.data.errors
+                }
+            })
+        },
+        eliminarPermanente(id) {
+            axios.post('/estudiante/eliminar-permanente',{id:id})
+            .then((response) => (
+                swal.fire({
+                    type : 'success',
+                    title : 'Estudiantes',
+                    text : response.data.mensaje,
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor:"#1abc9c",
+                }).then(respuesta => {
+                    if(respuesta.value) {
+                        this.show_estudiante = 'habilitados'
+                        this.listar()
+                        this.getResults()
+                    }
+                })
+            ))
+            .catch((errors) => {
+                if(response = errors.response) {
+                    this.errores = response.data.errors
+                    swal.fire({
+                        type : 'error',
+                        title : 'Especialidades',
+                        text : this.errores,
+                        confirmButtonText: 'Aceptar',
+                        confirmButtonColor:"#1abc9c",
+                    })
+                }
+            })
+        },
+        restaurar(id) {
+            axios.get('estudiante/mostrar',{params: {id:id}})
+            .then((response) => {
+                this.estudiante =response.data
+            })
+            swal.fire({
+                title:"¿Está Seguro de Restaurar?",
+                text:'Estudiante: '+this.estudiante.nombres+' '+this.estudiante.apellido_paterno+' '+this.estudiante.apellido_materno,
+                type:"question",
+                showCancelButton: true,
+                confirmButtonText:"Si",
+                confirmButtonColor:"#28a745",
+                cancelButtonText:"No",
+                cancelButtonColor:"#dc3545"
+            }).then( (response) => {
+                if(response.value) {
+                    axios.post('/estudiante/restaurar',{id:id})
+                    .then((response) => (
+                        swal.fire({
+                            type : 'success',
+                            title : 'Estudiante: '+this.estudiante.nombres+' '+this.estudiante.apellido_paterno+' '+this.estudiante.apellido_materno,
+                            text : response.data.mensaje,
+                            confirmButtonText: 'Aceptar',
+                            confirmButtonColor:"#1abc9c",
+                        }).then(respuesta => {
+                            if(respuesta.value) {
+                                this.show_estudiante='habilitados'
+                                this.listar()
+                                this.getResults()
+                            }
+                        })
+                    ))
+                    .catch((errors) => {
+                        if(response = errors.response) {
+                            this.errores = response.data.errors
+                            swal.fire({
+                                type : 'error',
+                                title : 'Módulos',
+                                text : this.errores,
+                                confirmButtonText: 'Aceptar',
+                                confirmButtonColor:"#1abc9c",
+                            })
+                        }
+                    })
+                }
+            }).catch((errors) => {
+                if(response = errors.response) {
+                    this.errores = response.data.errors
+                    swal.fire({
+                        type : 'error',
+                        title : 'Módulos',
+                        text : this.errores,
+                        confirmButtonText: 'Aceptar',
+                        confirmButtonColor:"#1abc9c",
+                    })
+                }
+            })
+        },
     },
     created() {
         this.listar()

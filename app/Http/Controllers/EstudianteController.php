@@ -107,9 +107,9 @@ class EstudianteController extends Controller
         ]);
     }
 
-    public function show(Estudiante $estudiante)
+    public function show(Request $request)
     {
-        //
+        return Estudiante::findOrFail($request->id);
     }
 
     public function edit(Estudiante $estudiante)
@@ -117,13 +117,74 @@ class EstudianteController extends Controller
         //
     }
 
-    public function update(Request $request, Estudiante $estudiante)
+    public function update(Request $request)
     {
-        //
+        $rules = [
+            'tipo_documento_id' => 'required',
+            'numero_documento' => 'required|min:8',
+            'nombres' => 'required',
+            'apellido_paterno' => 'required',
+            'apellido_materno' => 'required',
+            'sexo' => 'required'
+        ];
+
+        $mensaje=[
+            'required' =>"*Campo Obligatorio",
+            'min' => 'Ingrese 8 Dígitos'
+        ];
+
+        $this->validate($request,$rules,$mensaje);
+
+        $estudiante = Estudiante::findOrFail($request->id);
+
+        $estudiante->tipo_documento_id= $request->tipo_documento_id;
+        $estudiante->numero_documento = $request->numero_documento;
+        $estudiante->nombres = $request->nombres;
+        $estudiante->apellido_paterno = $request->apellido_paterno;
+        $estudiante->apellido_materno = $request->apellido_materno;
+        $estudiante->sexo = $request->sexo;
+        $estudiante->fecha_nacimiento = $request->fecha_nacimiento;
+        $estudiante->telefono = $request->telefono;
+        $estudiante->direccion = $request->direccion;
+        $request->foto = ($request->sexo == "M") ? 'images/user-male.png' : 'images/user-female.png';
+        $estudiante->foto = $request->foto;
+        $estudiante->save();
+
+        return response()->json([
+            'estudiante' => $estudiante,
+            'mensaje' => 'Estudiante Modificado Satisfactoriamente'
+        ]);
     }
 
-    public function destroy(Estudiante $estudiante)
+    public function destroyTemporal(Request $request)
     {
-        //
+       $estudiante = Estudiante::withTrashed()
+                                    ->where('id',$request->id)->first()->delete();
+
+        return response()->json([
+            'estudiante' =>$estudiante,
+            'mensaje' => 'Registro Estudiante ha sido enviado a Papelera de Reciclaje'
+        ]);
+    }
+
+    public function destroyPermanente(Request $request)
+    {
+       $estudiante = Estudiante::withTrashed()
+                                    ->where('id',$request->id)->first()->forceDelete();
+
+        return response()->json([
+            'estudiante' =>$estudiante,
+            'mensaje' => 'Registro Estudiante ha sido eliminado Satisfactoriamente'
+        ]);
+    }
+
+    public function restaurar(Request $request) {
+       $estudiante = Estudiante::onlyTrashed()
+                        ->where('id',$request->id)->first()->restore();
+
+        return response()->json([
+            '$estudiante' =>$estudiante,
+            'mensaje' => 'Registro Estudiante ha sido restaurado Satisfactoriamente'
+        ]);
     }
 }

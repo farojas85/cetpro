@@ -71,16 +71,20 @@
                                 title="Editar Menú" @click="editarMenu(menu.id)" >
                                 <i class="fas fa-edit"></i>
                             </button>
+                            @can('menus.destroy')
                             <button type="button" class="btn btn-danger btn-xs"
                                 title="Eliminar Menú" @click="eliminarMenu(menu.id)">
                                 <i class="fas fa-trash"></i>
                             </button>
+                            @endcan
                             </span>
                             <span v-else>
+                                @can('menus.restore')
                                 <button type="button" class="btn btn-danger btn-xs"
                                     title="Restaurar Menú" @click="restaurarMenu(menu.id)">
                                     <i class="fas fa-trash-restore"></i>
                                 </button>
+                                @endcan
                             </span>
                         </td>
                     </tr>

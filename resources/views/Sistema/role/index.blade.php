@@ -47,10 +47,12 @@
                                 title="Editar Roles" @click="editarRol(rol.id)" >
                                 <i class="fas fa-edit"></i>
                             </button>
+                            @can('roles.destroy')
                             <button type="button" class="btn btn-danger btn-sm"
                                 title="Eliminar Roles" @click="eliminarRol(rol.id)">
                                 <i class="fas fa-trash"></i>
                             </button>
+                            @endcan
                         </td>
                     </tr>
                 </tbody>

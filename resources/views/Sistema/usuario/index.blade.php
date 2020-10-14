@@ -42,8 +42,11 @@
                         <td>@{{user.email}}</td>
                         <td class="text-center">
                             <span v-if ="user.roles" v-for="role in user.roles">
-                                <span v-if="role.name == 'Administrador'" class="badge badge-success">@{{ role.name }}</span>
-                                <span v-else-if="role.name == 'Docente'" class="badge badge-info">@{{ role.name }}</span>
+                                <span v-if="role.name == 'Super Usuario'" class="badge bg-success">@{{ role.name }}</span>
+                                <span v-else-if="role.name == 'Administrado'" class="badge bg-primary">@{{ role.name }}</span>
+                                <span v-else-if="role.name == 'Docente'" class="badge bg-info">@{{ role.name }}</span>
+                                <span v-else-if="role.name == 'Alumno'" class="badge bg-danger">@{{ role.name }}</span>
+                                <span v-else-if="role.name == 'Usuario'" class="badge bg-indigo">@{{ role.name }}</span>
                             </span>
                             <span v-else>
                                 ----
@@ -61,10 +64,12 @@
                                 title="Editar Usuario" @click="editarUsuario(user.id)" >
                                 <i class="fas fa-edit"></i>
                             </button>
+                            @can('usuarios.destroy')
                             <button type="button" class="btn btn-danger btn-sm"
                                 title="Eliminar Usuario" @click="">
                                 <i class="fas fa-trash"></i>
                             </button>
+                            @endcan
                         </td>
                     </tr>
                 </tbody>

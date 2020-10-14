@@ -18,9 +18,11 @@
                     </dd>
                 </dl>
                 <div class="row container-fluid text-center">
+                    @can('menu-role.create')
                     <button type="button" class="btn btn-success" @click="guardarRoleMenu">
                         <i class="fas fa-save"></i> Guardar
                     </button>
+                    @endcan
                 </div>
             </div>
         </div>

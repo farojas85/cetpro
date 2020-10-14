@@ -47,10 +47,12 @@
                                 title="Editar Permiso" @click="" >
                                 <i class="fas fa-edit"></i>
                             </button>
+                            @can('permisos.destroy')
                             <button type="button" class="btn btn-danger btn-sm"
                                 title="Eliminar Permiso" @click="eliminarPermiso(permission.id)">
                                 <i class="fas fa-trash"></i>
                             </button>
+                            @endcan
                         </td>
                     </tr>
                 </tbody>

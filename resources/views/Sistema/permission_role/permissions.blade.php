@@ -14,9 +14,11 @@
                     </label>
                 </div>
                 <div class="row container-fluid text-center">
+                    @can('permiso-role.create')
                     <button type="button" class="btn btn-success" @click="guardarRolePermission">
                         <i class="fas fa-save"></i> Guardar
                     </button>
+                    @endcan
                 </div>
             </div>
         </div>

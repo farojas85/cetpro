@@ -25,5 +25,6 @@ class NavbarsTableSeeder extends Seeder
         Navbar::firstOrCreate(['nombre' => 'Navbar Warning','clase' => 'navbar-light navbar-warning']);
         Navbar::firstOrCreate(['nombre' => 'Navbar White','clase' => 'navbar-light navbar-white']);
         Navbar::firstOrCreate(['nombre' => 'Navbar Orange','clase' => 'navbar-light navbar-orange']);
+        Navbar::firstOrCreate(['nombre' => 'Navbar Master','clase' => 'navbar-white navbar-light']);
     }
 }

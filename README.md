@@ -1,2 +1,0 @@
-# psicotec_system
-# cetpro

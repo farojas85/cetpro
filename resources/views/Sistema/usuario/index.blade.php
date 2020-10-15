@@ -42,11 +42,11 @@
                         <td>@{{user.email}}</td>
                         <td class="text-center">
                             <span v-if ="user.roles" v-for="role in user.roles">
-                                <span v-if="role.name == 'Super Usuario'" class="badge bg-success">@{{ role.name }}</span>
-                                <span v-else-if="role.name == 'Administrado'" class="badge bg-primary">@{{ role.name }}</span>
-                                <span v-else-if="role.name == 'Docente'" class="badge bg-info">@{{ role.name }}</span>
-                                <span v-else-if="role.name == 'Alumno'" class="badge bg-danger">@{{ role.name }}</span>
-                                <span v-else-if="role.name == 'Usuario'" class="badge bg-indigo">@{{ role.name }}</span>
+                                <span v-if="role.name == 'super-usuario'" class="badge bg-success">@{{ role.name }}</span>
+                                <span v-else-if="role.name == 'administrador'" class="badge bg-primary">@{{ role.name }}</span>
+                                <span v-else-if="role.name == 'docente'" class="badge bg-info">@{{ role.name }}</span>
+                                <span v-else-if="role.name == 'alumno'" class="badge bg-danger">@{{ role.name }}</span>
+                                <span v-else-if="role.name == 'usuario'" class="badge bg-indigo">@{{ role.name }}</span>
                             </span>
                             <span v-else>
                                 ----
